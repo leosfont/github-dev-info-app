@@ -20,7 +20,7 @@
   <script lang="ts">
   import { defineComponent, PropType, ref, onMounted } from 'vue';
   import axios from 'axios';
-  import { DeveloperDetails } from '../intefaces/DeveloperDetails.ts';
+  import { DeveloperDetails } from '../interfaces/DeveloperDetails.ts';
   import { useRouter } from 'vue-router';
   
   export default defineComponent({
@@ -37,6 +37,11 @@
         login: '',
         public_repos: 0,
         created_at: '',
+        bio: '',
+        company: '',
+        location: '',
+        followers: 0,
+        following: 0
       });
   
       const router = useRouter();
