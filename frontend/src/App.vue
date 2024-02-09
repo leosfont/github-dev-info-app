@@ -1,7 +1,5 @@
 <template>
-  <div id="app">
     <DeveloperList />
-  </div>
 </template>
 
 <script>
@@ -13,6 +11,7 @@ export default {
   },
 };
 </script>
+
 
 <style>
 #app {
