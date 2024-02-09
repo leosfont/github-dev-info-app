@@ -10,7 +10,7 @@ class App
 
     public function __construct()
     {
-        require_once 'Helpers/route.php';
+        require_once 'route-helpers.php';
         require_once 'routes.php';
         self::$router = new SimpleRouter();
         self::$router->setDefaultNamespace('\App\Controllers');

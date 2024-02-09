@@ -7,12 +7,10 @@ use GuzzleHttp\Client;
 class GithubService
 {
     private $apiUrl;
-    private $storageService;
     
-    public function __construct(StorageService $storageService)
+    public function __construct()
     {
         $this->apiUrl = 'https://api.github.com/';
-        $this->storageService = $storageService;
     }
 
     public function getUserData(string $username): array
@@ -29,8 +27,9 @@ class GithubService
             $userData = json_decode($response->getBody(), true);
 
             $filename = "user_data_{$username}.json";
-            $this->storageService->saveJson($filename, $userData, 'profile');
-
+            $storageService = new StorageService();
+            $response = $storageService->saveJson($filename, $userData, 'profile');
+            print_r($response); die();
             return $userData;
         }
 

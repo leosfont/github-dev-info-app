@@ -6,9 +6,9 @@ class StorageService
 {
     private $storagePath;
 
-    public function __construct(string $storagePath = 'storage')
+    public function __construct()
     {
-        $this->storagePath = $storagePath;
+        $this->storagePath = 'storage';
     }
 
     public function saveJson(string $filename, array $data, string $subdirectory = ''): bool

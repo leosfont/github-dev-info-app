@@ -3,20 +3,13 @@
 namespace App\Controllers;
 
 use App\Services\GithubService;
-use App\Services\StorageService;
 
 class GithubController
 {
-    private $githubService;
-
-    public function __construct(GithubService $githubService)
+    public function saveProfileToLocal(string $username)
     {
-        $this->githubService = $githubService;
-    }
-
-    public function getUserData(string $username)
-    {
-        $userData = $this->githubService->getUserData($username);
+        $githubService = new GithubService();
+        $userData = $githubService->getUserData($username);
 
         if (!empty($userData)) {
             return response()->json(['message' => 'Informações salvas localmente!', 'data' => $userData]);
