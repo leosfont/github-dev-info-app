@@ -1,5 +1,5 @@
 <template>
-    <DeveloperList />
+    <router-view />
 </template>
 
 <script>
