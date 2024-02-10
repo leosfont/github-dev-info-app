@@ -11,6 +11,15 @@ class StorageService
         $this->storagePath = 'storage';
     }
 
+    public function getFile(string $filename, string $subdirectory = '') {
+        $filePath = "{$this->storagePath}/{$subdirectory}/{$filename}";
+        if (file_exists($filePath)) {
+            return file_get_contents($filePath);
+        } else {
+            return null;
+        }
+    }
+
     public function saveJson(string $filename, array $data, string $subdirectory = ''): bool
     {
         $directory = $this->storagePath . '/' . $subdirectory;

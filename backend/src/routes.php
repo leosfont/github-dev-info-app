@@ -2,8 +2,6 @@
 
 use \Pecee\SimpleRouter\SimpleRouter;
 
-SimpleRouter::get('/', function() {
-    return 'Hello world';
-});
+SimpleRouter::get('/buscar-local/{username}', 'GithubController@getProfileLocal');
 
 SimpleRouter::post('/salvar-local/{login}', 'GithubController@saveProfileToLocal');

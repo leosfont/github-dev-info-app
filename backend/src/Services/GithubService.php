@@ -12,8 +12,14 @@ class GithubService
     {
         $this->apiUrl = 'https://api.github.com/';
     }
+    
+    public function getUserData(string $username) {
+        $storageService = new StorageService();
+        $filename = "user_data_{$username}.json";
+        return $storageService->getFile($filename, 'profile');
+    }
 
-    public function getUserData(string $username): array
+    public function saveUserData(string $username): array
     {
         $client = new Client();
 
@@ -29,10 +35,11 @@ class GithubService
             $filename = "user_data_{$username}.json";
             $storageService = new StorageService();
             $response = $storageService->saveJson($filename, $userData, 'profile');
-            print_r($response); die();
             return $userData;
         }
 
         return [];
     }
+
+
 }

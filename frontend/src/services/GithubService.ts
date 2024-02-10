@@ -7,27 +7,25 @@ export default class GitHubService {
         this.apiUrl = 'https://api.github.com';
     }
 
-    getUser(username: string): Promise<AxiosResponse<any>> {
+    async getUser(username: string): Promise<AxiosResponse<any> | null> {
         return this.handle(`${this.apiUrl}/users/${username}`);
     }
 
-    getSearchUsers(searchQuery: string = ''): Promise<AxiosResponse<any>> {
+    async getSearchUsers(searchQuery: string = ''): Promise<AxiosResponse<any> | null> {
         return this.handle(`${this.apiUrl}/search/users?q=${searchQuery}`);
     }
 
-    getRepositories(username: string): Promise<AxiosResponse<any>> {
+    async getRepositories(username: string): Promise<AxiosResponse<any> | null> {
         return this.handle(`${this.apiUrl}/users/${username}/repos`);
     }
 
-    handle(url: string): Promise<AxiosResponse<any>> {
-        return new Promise<AxiosResponse<any>>(async (resolve, reject) => {
-            try {
-                const response = await axios.get(url);
-                resolve(response);
-            } catch (error) {
-                console.error('Erro ao buscar detalhes do desenvolvedor:', error);
-                reject(error);
-            }
-        });
+    private async handle(url: string): Promise<AxiosResponse<any> | null> {
+        try {
+            const response = await axios.get(url);
+            return response;
+        } catch (error) {
+            console.error('Erro ao se comunicar com a API do Github:', error);
+            return null;
+        }
     }
 }
