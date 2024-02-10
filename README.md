@@ -18,6 +18,13 @@ Este projeto visa explorar as informações de desenvolvedores do GitHub de uma 
 - Campo de busca em tempo real para filtrar registros.
 - Ao clicar em um usuário, é possível visualizar seu perfil completo em uma página separada usando Vue Router com os repositórios do Github.
 
+### Funcionalidades Extra
+- **Reutilização de Recurso Local:** Implementei a reutilização do recurso salvo localmente pelo backend no frontend, evitando solicitações adicionais para o mesmo perfil do GitHub.
+
+### Funcionalidades Pendentes
+- **Teste Unitário no Frontend com Jest:** Gostaria de ter incluído testes unitários no frontend utilizando Jest para garantir a robustez e confiabilidade do código.
+- **Salvar Localmente Repositórios do Desenvolvedor:** Pretendia implementar o salvamento local dos repositórios do desenvolvedor para evitar a necessidade de repetir a ação, aproveitando a funcionalidade de salvar o perfil.
+
 ## Backend
 
 ### Tecnologias Utilizadas
@@ -42,5 +49,7 @@ Este projeto visa explorar as informações de desenvolvedores do GitHub de uma 
    - Instale as dependências com `composer install`.
    - Configure o servidor Apache para apontar para a pasta do backend.
    - Certifique-se de que o PHP 7.4 está configurado corretamente.
-   - Instale a extensão PHP DOM `sudo apt-get install php-xml` para rodar o test `./vendor/bin/phpunit`
+   - Instale a extensão PHP DOM `sudo apt-get install php-xml` para rodar o teste `./vendor/bin/phpunit`
    - Execute o servidor com `php -S localhost:3000 -t public`
+
+Agradecemos pela oportunidade e estamos à disposição para eventuais ajustes ou esclarecimentos adicionais.
