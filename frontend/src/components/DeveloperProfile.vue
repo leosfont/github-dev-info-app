@@ -3,25 +3,25 @@
         <Breadcrumb :items="breadcrumbItems" />
         <div class="d-flex flex-column">
             <div class="card p-4 d-flex flex-column align-items-center">
-                <img :src="developerDetails?.avatar_url" alt="Avatar" class="rounded-circle shadow" style="width: 100px; height: 100px;">
+                <img :src="developer?.avatar_url" alt="Avatar" class="rounded-circle shadow" style="width: 100px; height: 100px;">
                 <div class="">
-                    <h4 class="text-small">{{ developerDetails?.login }}</h4>
-                    <p v-if="developerDetails?.bio" class="bio">{{ developerDetails?.bio }}</p>
-                    <p v-if="developerDetails?.company" class="company">{{ developerDetails?.company }}</p>
-                    <p v-if="developerDetails?.location" class="location">{{ developerDetails?.location }}</p>
+                    <h4 class="text-small">{{ developer?.login }}</h4>
+                    <p v-if="developer?.bio" class="bio">{{ developer?.bio }}</p>
+                    <p v-if="developer?.company" class="company">{{ developer?.company }}</p>
+                    <p v-if="developer?.location" class="location">{{ developer?.location }}</p>
                 </div>
             </div>
             <div class="mt-3 d-flex flex-wrap justify-content-center align-items-center">
                 <div class="mx-3">
-                    <span class="badge bg-secondary">{{ developerDetails?.public_repos }} 📁</span>
+                    <span class="badge bg-secondary">{{ developer?.public_repos }} 📁</span>
                     <span class="ms-1">Repos</span>
                 </div>
                 <div class="mx-3">
-                    <span class="badge bg-secondary">{{ developerDetails?.followers }} 👥</span>
+                    <span class="badge bg-secondary">{{ developer?.followers }} 👥</span>
                     <span class="ms-1">Followers</span>
                 </div>
                 <div class="mx-3">
-                    <span class="badge bg-secondary">{{ developerDetails?.following }} 👥</span>
+                    <span class="badge bg-secondary">{{ developer?.following }} 👥</span>
                     <span class="ms-1">Following</span>
                 </div>
             </div>
@@ -39,11 +39,11 @@
   </template>
   
   <script lang="ts">
-  import { defineComponent, ref, onMounted } from 'vue';
-  import axios from 'axios';
+  import { defineComponent, ref, watchEffect } from 'vue';
   import Breadcrumb from '../components/Breadcrumb.vue';
-  import { DeveloperDetails } from '../interfaces/DeveloperDetails.ts';
+  import { DeveloperProfile } from '../interfaces/DeveloperProfile.ts';
   import { GitHubRepository } from '../interfaces/GitHubRepository.ts';
+  import { useDeveloperStore } from '../stores/developer.ts';
   import { useRoute } from 'vue-router';
 
   export default defineComponent({
@@ -52,39 +52,21 @@
     },
     setup() {
         const route = useRoute();
-        const developerDetails = ref<DeveloperDetails | null>(null);
+        const developerStore = useDeveloperStore();
+        const developer = ref<DeveloperProfile | null>(null);
         const repositories = ref<GitHubRepository[]>([]);
+        const username = route.params.username;
         const breadcrumbItems = ref([
             { label: 'App', to: '/' },
             { label: 'Developer List', to: '/' },
-            { label: 'Profile', to: `/developer/${route.params.username}`, active: true },
+            { label: 'Profile', to: `/developer/${username}`, active: true },
         ]);
+        developerStore.fetchDeveloper(username);
+        developerStore.fetchRepositories(username)
     
-        const fetchDeveloperDetails = async () => {
-            try {
-                const response = await axios.get(`https://api.github.com/users/${route.params.username}`);
-                if (response.data) {
-                    developerDetails.value = response.data;
-                }
-            } catch (error) {
-                console.error('Erro ao buscar detalhes do desenvolvedor:', error);
-            }
-        };
-    
-        const fetchRepositories = async () => {
-            try {
-                const response = await axios.get(`https://api.github.com/users/${route.params.username}/repos`);
-                if (response.data) {
-                    repositories.value = response.data;
-                }
-            } catch (error) {
-                console.error('Erro ao buscar repositórios do desenvolvedor:', error);
-            }
-        };
-    
-        onMounted(async () => {
-            await fetchDeveloperDetails();
-            await fetchRepositories();
+        watchEffect(() => {
+            developer.value = developerStore.developerProfile;
+            repositories.value = developerStore.developerRepositories;
         });
     
         const formatDate = (dateString: string) => {
@@ -93,7 +75,7 @@
         };
     
         return {
-            developerDetails,
+            developer,
             repositories,
             breadcrumbItems,
             formatDate,

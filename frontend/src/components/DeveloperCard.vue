@@ -19,19 +19,18 @@
   
   <script lang="ts">
   import { defineComponent, PropType, ref, onMounted } from 'vue';
-  import axios from 'axios';
-  import { DeveloperDetails } from '../interfaces/DeveloperDetails.ts';
+  import { DeveloperProfile } from '../interfaces/DeveloperProfile.ts';
   import { useRouter } from 'vue-router';
-  
+
   export default defineComponent({
     props: {
       developer: {
-        type: Object as PropType<DeveloperDetails>,
+        type: Object as PropType<DeveloperProfile>,
         required: true,
       },
     },
     setup(props) {
-      const developerDetails = ref<DeveloperDetails>({
+      const developerDetails = ref<DeveloperProfile>({
         id: 0,
         avatar_url: '',
         login: '',
@@ -46,19 +45,8 @@
   
       const router = useRouter();
   
-      const fetchDeveloperDetails = async () => {
-        try {
-          const response = await axios.get(`https://api.github.com/users/${props.developer.login}`);
-          if (response.data) {
-            developerDetails.value = response.data;
-          }
-        } catch (error) {
-          console.error('Erro ao buscar detalhes do desenvolvedor:', error);
-        }
-      };
-  
       onMounted(() => {
-        fetchDeveloperDetails();
+        developerDetails.value = props.developer;
       });
   
       const formatDate = (dateString: string) => {

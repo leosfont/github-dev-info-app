@@ -1,22 +1,33 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
 import { GitHubDeveloper } from '../interfaces/GitHubDeveloper';
+import { DeveloperProfile } from '../interfaces/DeveloperProfile';
+import { GitHubRepository } from '../interfaces/GitHubRepository';
+import GitHubService from '../services/GithubService';
+
+const githubService = new GitHubService();
 
 export const useDeveloperStore = defineStore('developer', {
   state: () => ({
     developers: [] as GitHubDeveloper[],
     originalList: [] as GitHubDeveloper[],
+    developerProfile: {} as DeveloperProfile,
+    developerRepositories: [] as GitHubRepository[],
     searchQuery: 'user:wallysonn+user:diego3g+user:filipedeschamps+user:rmanguinho',
   }),
-
   actions: {
     async fetchDevelopers() {
-      try {
-        const response = await axios.get(`https://api.github.com/search/users?q=${this.searchQuery}`);
-        this.developers = response.data.items as GitHubDeveloper[];
-      } catch (error) {
-        console.error('Erro ao buscar desenvolvedores:', error);
-      }
+      const response = await githubService.getSearchUsers(this.searchQuery);
+      const developers = response.data.items as GitHubDeveloper[];
+
+      const responses = await Promise.all(
+        developers.map(async (developer: GitHubDeveloper) => {
+          const response = await githubService.getUser(developer.login);
+          const { public_repos, created_at } = response.data;
+          return { ...developer, public_repos, created_at };
+        })
+      );
+  
+      this.developers = responses;
     },
 
     filterDevelopers(query: string) {
@@ -29,8 +40,14 @@ export const useDeveloperStore = defineStore('developer', {
       );
     },
 
-    restoreOriginalList() {
-      this.developers = this.originalList.slice();
+    async fetchDeveloper(username: string) {
+        const response = await githubService.getUser(username);
+        this.developerProfile = response.data;
     },
+
+    async fetchRepositories(username: string) {
+        const response = await githubService.getRepositories(username);
+        this.developerRepositories = response.data;
+    }
   },
 });
