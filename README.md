@@ -42,4 +42,5 @@ Este projeto visa explorar as informações de desenvolvedores do GitHub de uma 
    - Instale as dependências com `composer install`.
    - Configure o servidor Apache para apontar para a pasta do backend.
    - Certifique-se de que o PHP 7.4 está configurado corretamente.
+   - Instale a extensão PHP DOM `sudo apt-get install php-xml`
    - Execute o servidor com `php -S localhost:3000 -t public`

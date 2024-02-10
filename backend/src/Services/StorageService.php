@@ -8,7 +8,7 @@ class StorageService
 
     public function __construct()
     {
-        $this->storagePath = 'storage';
+        $this->storagePath = __DIR__ . '/../../storage';
     }
 
     public function getFile(string $filename, string $subdirectory = '') {
