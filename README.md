@@ -35,7 +35,8 @@ This project aims to explore GitHub developers' information in an intuitive and 
 - Guzzle PHP Client
 
 ### Features
-- Route "/save-local" to save user information locally.
+- Route "/salvar-local" to save user information locally.
+- Route "/buscar-local" to get user information locally.
 - Button on the user profile to save login on the backend.
 - The backend accesses the GitHub API using Guzzle and saves the result in a JSON file.
 
