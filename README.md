@@ -1,4 +1,4 @@
-# Vue GitHub Developers Explorer
+# GitHub Developers Explorer
 
 This project aims to explore GitHub developers' information in an intuitive and interactive way. The application is divided into Frontend and Backend to provide a comprehensive experience.
 
